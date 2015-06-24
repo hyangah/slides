@@ -1,3 +1,5 @@
+// +build omit
+
 // Copyright 2015 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -25,6 +27,7 @@ import (
 	"golang.org/x/mobile/geom"
 	"golang.org/x/mobile/gl"
 )
+//END OMIT
 
 func main() {
 	app.Run(app.Callbacks{
@@ -35,7 +38,6 @@ func main() {
 	})
 }
 
-//END OMIT
 const (
 	width  = 72
 	height = 60

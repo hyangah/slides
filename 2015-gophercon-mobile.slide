@@ -1,93 +1,92 @@
 Go on Mobile
 
 GopherCon
-July 9, 2015
 
 Hana Kim
 Google
 
 * golang.org/x/mobile
 
-Goal: Bring Go to Mobile Platforms.
+Goal: Bring Go to Mobile Platforms
 
 Why?
 
-- Write a single cross-platform Go library.
-- Go is a complete system programming language.
-- Write more Go than C/C++. ❤❤❤
+- Write a single cross-platform Go library
+- Use Go to program a complete system (server and client)
+- Write more Go than C/C++ ❤
 
 * Two ways of using Go
 
 SDK Apps
 
-- Write Android UI in Java.
-- Write iOS UI in Swift/Objective-C.
-- Common functionalities in Go as a library.
+- Write Android UI in Java
+- Write iOS UI in Swift/Objective-C
+- Write common functionality in Go as a library
 
 
-NDK Apps
+Native Apps
 
-- Everything is written in Go. 
-- Features available through NDK (touch/keyboard/sensor/...)
-- OpenGL, OpenAL, 2D sprite packages.
+- Write the whole app in Go
+- Use packages for features available through NDK (touch/keyboard/sensor/...)
+- Use packages for OpenGL, OpenAL, 2-D sprites.
 
 
 * Before Go 1.4
 
-Install and run a Go binary built with cgo + external linking
+Some users built their own Go binaries for Android with cgo + external linking through NDK tool chains
 
-	adb push
-	adb shell 
-
-Apps with an out-of-process model.
+Apps with an out-of-process model
 　Camlistore android app, ...
 
-Apps with an in-process model.
+Apps with an in-process model
 　Goandroid, Mandala, ...
 
 
 * Go 1.4: Hello, Android!
 
 
-Can build Android apps (arm).
+Can build Android apps (`arm`)
 
-Can build Dalvik/ART-loadable .so.
+Can build Dalvik/ART-loadable .so
 
-Android builder.
+Android builder
 　
-The `gobind` tool for Java and Go language binding.
+The `gobind` tool for Java and Go language binding
 
-Packages for cross-device apps: basic app control, openGL ES 2, touch.
+Packages for cross-device apps: basic app control, openGL ES 2, touch
 
 .link https://golang.org/s/go14android
-.link https://golang.osg/s/gobind
+.link https://golang.org/s/gobind
 
 * Go 1.5: Hello, iOS!
 
-Experimental support for iOS (arm,arm64).
+Experimental support for iOS (`arm`,`arm64`)
 
-Major progress in shared library support.
+Major progress in shared library support
+
+  -buildmode=c-shared   // generates .so file loadable by Dalvik/Art
+  -buildmode=c-archive  // generates .a file compiled to C code
+
 .link golang.org/x/buildmodes
 
+`golang.org/x/mobile` repository:
 
-Mobile subrepo:
-
-- The `gomobile` tool for mobile app/library build.
+- The `gomobile` tool for mobile app/library build
 
 - More packages under experiment: audio, font, sensor, sprite, ...
 
-- Extended `gobind` tool: Objective-C binding.
+- Extended `gobind` tool: Objective-C binding
 
 
-* All Go Apps (NDK Apps)
+* Pure-Go Apps (Native Apps)
 
-* Challenges
+* Challenge
 
-Designing cross-platform APIs.
+Designing cross-platform APIs
 
-Coverage to ensure to be useful.
+- with good API coverage to be useful
 
-while following idiomatic Go style.
+- following idiomatic Go style
 
 
 * Packages for cross-platform apps
@@ -95,37 +94,47 @@ while following idiomatic Go style.
 Develop, test and run your application
 on your desktop and then deploy it to mobile devices.
 
-- [[https://godoc.org/golang.org/x/mobile/app][App control]]
-- [[https://godoc.org/golang.org/x/mobile/gl][OpenGL ES 2]]
-- [[https://godoc.org/golang.org/x/mobile/event][Touch events]]
-- [[https://godoc.org/golang.org/x/mobile/geom][Screen geometry]]
-- [[https://godoc.org/golang.org/x/mobile/exp/audio][Audio]]
-- [[https://godoc.org/golang.org/x/mobile/exp/font][System font]]
-- [[https://godoc.org/golang.org/x/mobile/exp/sensor][Motion sensor]]
-- [[https://godoc.org/golang.org/x/mobile/exp/sprite][2D rendering]]
+golang.org/x/mobile/...
+- [[http://golang.org/x/mobile/app][app: App control]]
+- [[http://golang.org/x/mobile/gl][gl: OpenGL ES 2]]
+- [[https://golang.org/x/mobile/event][event: Events ]]
+- [[https://golang.org/x/mobile/geom][geom: Screen geometry]]
+- [[https://golang.org/x/mobile/exp/audio][audio: Audio]]
+- [[https://golang.org/x/mobile/exp/font][font: System font]]
+- [[https://golang.org/x/mobile/exp/sensor][sensor: Motion sensors]]
+- [[https://golang.org/x/mobile/exp/sprite][sprite: 2-D rendering]]
 
-* Lifecycle in Native Apps
+* Life Cycle of a Native Apps
 
-Begins in platform-specific code.
+Android
 
-The Go runtime is initialized and the Go main is called.
+- It begins in Android-specific code (ANativeActivity)
+- The shared library is loaded.
+- The Go runtime is initialized and the Go main is called
+- app.Run starts UI/Event handling
 
-All packaged in [[https://godoc.org/golang.org/x/mobile/app]].
+iOS
 
-// TODO: app API is in flux. Add code snippet once it gets quiet.
+- It begins from the Go main.
+- app.Run starts UI/Event handling.
+
+All packaged in [[http://golang.org/x/mobile/app]]
+
 
 * Demo: Hello, Gopher!
 
 .code 2015-gophercon-mobile/hello/main.go /START OMIT/,/END OMIT/
 
-The app package includes Mac/X11 shims for starting as normal programs.
+This program uses the listed packages; no Java or C in my code.
+
+The app package includes Mac/X11 shims for starting as normal programs
 
 
-* The gomobile tool
+* The `gomobile` tool
 
-.link godoc.org/golang.org/x/mobile/cmd/gomobile
+  $ go get golang.org/x/mobile/cmd/gomobile
 
-Simplifies toolchain installation and app deployment.
+Simplifies toolchain installation and app deployment
 
 To install the Android/iOS compiler tool chain:
 
@@ -135,16 +144,11 @@ To build an Android APK and install on a device:
 
 	$ gomobile -target=android build
 
-To build an iOS app (work-in-progress):
+To build an iOS app (work in progress):
 
 	$ gomobile -target=ios build
 
-
-* Demo: Hello, Gopher, again!
-
-// install hello app on Android.
-// TODO: screen shot and backup video
-
+(Demo)
 
 * Gobind Apps (SDK Apps)
 
@@ -153,41 +157,43 @@ To build an iOS app (work-in-progress):
 
 .image 2015-gophercon-mobile/gobind.png 300 _
 
-Manually mapping data structures and functions between languages.
+Manually mapping data structures and functions between languages
 
-Integration with existing IDEs.
+Integration with existing IDEs
 
 
-* The gobind tool
+* The `gobind` tool
 
-Language binding through code generation.
+	$ go get golang.org/x/mobile/cmd/gobind
 
-Exported Go APIs define the language binding; no explicit annotation.
+Automates language binding through code generation
 
-Currently supports a [[https://godoc.org/golang.org/x/mobile/cmd/gobind][subset of Go types]].
+Defines the language binding from exported Go APIs; no explicit annotation
 
-* The gobind tool 
+Currently supports a [[http://golang.org/x/mobile/cmd/gobind][subset of Go types]]
 
-The `gobind` tool outputs .go glue code and the proxy API in target language.
+* Demo: `gobind`
+
+The `gobind` tool outputs .go glue code and the proxy API in target language
 
 - Generate the go glue code for mypkg:
 
-	$ gobind -lang=go -outdir=godir mypkg
+	$ gobind -lang=go -outdir=go_mypkg mypkg
 
-- Generate the corresponding java types:
+- Generate the corresponding types for Java:
 
-	$ gobind -lang=java -outdir=javadir mypkg
+	$ gobind -lang=java -outdir=java mypkg
 
-- Similarly, generate the objective-c types:
+- Or Objective-C:
 
-	$ gobind -lang=objc -outdir=objcdir mypkg
+	$ gobind -lang=objc -outdir=objc mypkg
 
 
 * Calling Go from Java
 
 .code 2015-gophercon-mobile/gobindex/MainActivity.java /START OMIT/,/END OMIT/
 
-`go.Go.init` initializes the Go runtime.
+`go.Go.init` initializes the Go runtime
 
 * How to build it?
 
@@ -198,63 +204,67 @@ The `gobind` tool outputs .go glue code and the proxy API in target language.
 
 Simplifies the build process. Internally,
 
-- Generates .go glue code and the target language code using gobind.
+- Generates .go glue code and the target language code using gobind
 
-- Compiles the .go glue code to a shared library.
+- Compiles the .go glue code to a shared library
 
-- Compiles the generated Java code using the build tools in SDK.
+- Compiles the generated Java code using the build tools in SDK
 
-- Packages everything into a `.aar` file (modern way to distribute android library).
+- Packages everything into a `.aar` file (modern way to distribute android library)
 
-iOS support, WIP.
+iOS support is a work in progress.
 
 
 * Android Studio integration
 
-Android Studio 1.2+ supports .aar import.
+Android Studio 1.2+ supports `.aar` import
 
 .image 2015-gophercon-mobile/androidstudio2.png 250 _
 
 Update
 - Build script to invoke `gomobile bind`, or
-- Gradle-plugin to invoke `gomobile bind` and publish the output.
+- Gradle-plugin to invoke `gomobile bind` and publish the output
 
-In the future, this can be integrated into Android Studio.
+In the future, this can be integrated into Android Studio
 
 
-* Story of Ivy
+* The Story of Ivy
 
 [[robpike.io/ivy]]
 
-Ivy is an interpreter for an APL-like language.
+Ivy is an interpreter for an APL-like language developed by Rob Pike.
 
-It uses exact rational arithmetic; can handle arbitrary precision
-but does not implement any irrational calculations.
+[[http://go-talks.appspot.com/github.com/robpike/ivy/talks/ivy.slide#1][Rob Pike's talk]]
 
-Unlike APL, the input is ASCII and the results are exact. 
+It's a useful desktop calculator that handles big int, rational numbers, vectors, matrices
+It's fun to play with
 
-Trivium: Rob named it after Kenneth Iverson, the APL inventor.
+Can I has Ivy on my mobile phone?
 
 * Bring Ivy to Mobile
+
+	func Run(expr string) (result string, err error) 
 
 .image 2015-gophercon-mobile/ivyabout.png 300 _
 
 (Demo)
 
+Trivium: Rob named it after Kenneth Iverson, the APL inventor
+
 * What's Next?
 
-More APIs available to All-Go apps.
+More APIs available to "pure-Go" apps
 
-Testing, Profiling, Debugging.
+Testing, Profiling, Debugging
 
-Improvement in GL, graphics packages.
+Improvement in GL, graphics packages
 
-More platform API support.
+More platform API support
 
-Richer type support in Gobind.
+Richer type support in `gobind`
 
 IDE integration..
 
 * Contribution
 
-// TODO: list of contributors, ...
+// TODO: list of contributors
