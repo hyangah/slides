@@ -1,8 +1,8 @@
-// +build omit
-
 // Copyright 2015 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
+
+// Based on golang.org/x/mobile/example/audio
 
 package main
 
@@ -27,6 +27,7 @@ import (
 	"golang.org/x/mobile/geom"
 	"golang.org/x/mobile/gl"
 )
+
 //END OMIT
 
 func main() {
@@ -45,7 +46,6 @@ const (
 
 var (
 	startClock = time.Now()
-	lastClock  = clock.Time(-1)
 
 	eng   = glsprite.Engine()
 	scene *sprite.Node
@@ -55,9 +55,11 @@ var (
 	activate    = false
 	acceptTouch = false
 	touchLoc    geom.Point
+
+	started = false
 )
 
-func touch(t event.Touch) {
+func touch(t event.Touch, c event.Config) {
 	if t.Type != event.TouchStart {
 		return
 	}
@@ -79,28 +81,26 @@ func start() {
 		log.Fatal(err)
 	}
 
-	touchLoc = geom.Point{geom.Width / 2, geom.Height / 2}
 }
 
 func stop() {
 	player.Close()
 }
 
-func draw() {
-	if scene == nil {
-		loadScene()
+func draw(c event.Config) {
+	if !started {
+		touchLoc = geom.Point{c.Width / 2, c.Height / 2}
+		started = true
 	}
-
-	now := clock.Time(time.Since(startClock) * 60 / time.Second)
-	/*if now == lastClock {
-		return
-	}*/
-	lastClock = now
+	if scene == nil {
+		loadScene(c)
+	}
 
 	gl.ClearColor(1, 1, 1, 1)
 	gl.Clear(gl.COLOR_BUFFER_BIT)
-	eng.Render(scene, now)
-	debug.DrawFPS()
+	now := clock.Time(time.Since(startClock) * 60 / time.Second)
+	eng.Render(scene, now, c)
+	debug.DrawFPS(c)
 }
 
 func newNode() *sprite.Node {
@@ -110,7 +110,7 @@ func newNode() *sprite.Node {
 	return n
 }
 
-func loadScene() {
+func loadScene(c event.Config) {
 	gopher := loadGopher()
 	scene = &sprite.Node{}
 	eng.Register(scene)
@@ -130,7 +130,9 @@ func loadScene() {
 			x = float32(touchLoc.X)
 			y = float32(touchLoc.Y)
 			acceptTouch = false
+			st := time.Now()
 			hello()
+			log.Printf("hello: %s", time.Since(st))
 		} else if activate {
 			if x < 0 {
 				dx = 1
@@ -138,10 +140,10 @@ func loadScene() {
 			if y < 0 {
 				dy = 1
 			}
-			if x+width > float32(geom.Width) {
+			if x+width > float32(c.Width) {
 				dx = -1
 			}
-			if y+height > float32(geom.Height) {
+			if y+height > float32(c.Height) {
 				dy = -1
 			}
 
@@ -157,7 +159,6 @@ func loadScene() {
 }
 
 func hello() {
-	// TODO(jbd): the sound explodes at seek, volume down and seek?
 	player.Seek(0)
 	player.Play()
 }
