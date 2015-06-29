@@ -279,8 +279,9 @@ Support for more platforms (e.g. android/x86, ...)
 
 Richer type support in `gobind`
 
-IDE integration.
+IDE integration
 
 * Contributors
+.image 2015-gophercon-mobile/contributors.png
 
-// TODO: list of contributors
+
