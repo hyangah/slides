@@ -5,6 +5,10 @@ GopherCon 2015
 Hana Kim
 Google
 
+* (for reviewers)
+
+[[https://critique.corp.google.com/#review/96785043][cl/96785043]]
+
 
 * Prehistory
 
@@ -109,18 +113,14 @@ To build an Android APK and an iOS app
 
 * Go as a shared library
 
+Go 1.5 can build Go programs as a library that can be consumed by C programs
 
-Go 1.5 can build a shared library from the main Go package
+- Shared library for dynamic linking (`-buildmode=c-shared`)
+- C archive file for static linking (`-buildmode=c-archive`)
 
-  -buildmode=c-shared   // generates .so file dynamically loadable by non-Go code
-  
-  -buildmode=c-archive  // generates .a file that can be linked into non-Go code
+Functions marked with `//export` cgo annotations are callable.
 
-Functions marked with `//export` are callable.
-
-Enables calling Go functions from apps written in Java or Objective-C
-
-[[https://docs.google.com/document/d/1nr-TQHw_er6GOQRsF6T43GGhFDelrAP0NqSS_00RgZQ/edit][Go execution mode]]
+.link http://golang.org/s/execmodes
 
 * Working with Foreign Languages
 
@@ -258,7 +258,7 @@ It's a useful desktop calculator that handles big int, rational numbers, vectors
 
 It's fun to play with 
 
-* Can I have it on my Mobile phone?
+* Ivy on Mobile?
 
 ~5k lines of Go code (not including tests, docs)
 
@@ -266,20 +266,22 @@ Dependency on `math`, `math/big`, `math/rand`, `unicode`, ...
 
 .image 2015-gophercon-mobile/canihas.jpg 300 _
 
-Rewriting in Java or Objective-C is a nonstarter.
+Rewriting in Java or Objective-C is a nonstarter
 
-* Ivy on Mobile
+* Yes, Ivy on Mobile
 
 .image 2015-gophercon-mobile/ivymobile.png 300 _
 .caption Ivy logo by [[http://www.reneefrench.com][Renée French]]
 
 Write it once as a lirary in Go
 
-Take advantage of great features available in Go
+Enjoy great features and packages available in Go
 
 * Where are we now?
 
 * Go 1.4: Hello, Android!
+
+Released in December 2015
 
 Can build Android apps (`arm`)
 
@@ -294,6 +296,8 @@ Packages for cross-device apps: basic app control, OpenGL ES 2, touch
 
 * Go 1.5: Hello, iOS!
 
+To be released in August 2015
+
 Experimental support for iOS (`arm,arm64`)
 
 iOS builder 
@@ -302,7 +306,7 @@ iOS builder
 
 Enable calling Go functions from foreign language in a clean way
 
-[[https://docs.google.com/document/d/1nr-TQHw_er6GOQRsF6T43GGhFDelrAP0NqSS_00RgZQ/edit][Shared library support]]
+.link golang.org/s/execmodes
 
 * Go 1.5: Better tools & more packages
 
