@@ -17,8 +17,9 @@ import (
 //START OMIT
 import (
 	"golang.org/x/mobile/app"
-	"golang.org/x/mobile/app/debug"
+	"golang.org/x/mobile/asset"
 	"golang.org/x/mobile/event"
+	"golang.org/x/mobile/exp/app/debug"
 	"golang.org/x/mobile/exp/audio"
 	"golang.org/x/mobile/exp/sprite"
 	"golang.org/x/mobile/exp/sprite/clock"
@@ -72,7 +73,7 @@ func touch(t event.Touch, c event.Config) {
 }
 
 func start() {
-	rc, err := app.Open("hello.wav")
+	rc, err := asset.Open("hello.wav")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -127,12 +128,12 @@ func loadScene(c event.Config) {
 		eng.SetSubTex(n, gopher)
 
 		if acceptTouch {
-			x = float32(touchLoc.X)
-			y = float32(touchLoc.Y)
+			dx = (float32(touchLoc.X) - x) / 60
+			dy = (float32(touchLoc.Y) - y) / 60
 			acceptTouch = false
-			st := time.Now()
 			hello()
-			log.Printf("hello: %s", time.Since(st))
+			x += dx
+			y += dy
 		} else if activate {
 			if x < 0 {
 				dx = 1
@@ -146,7 +147,6 @@ func loadScene(c event.Config) {
 			if y+height > float32(c.Height) {
 				dy = -1
 			}
-
 			x += dx
 			y += dy
 		}
@@ -164,7 +164,7 @@ func hello() {
 }
 
 func loadGopher() sprite.SubTex {
-	a, err := app.Open("gopher.jpeg")
+	a, err := asset.Open("gopher.jpeg")
 	if err != nil {
 		log.Fatal(err)
 	}
