@@ -105,7 +105,7 @@ To install the Android/iOS compiler tool chain:
 To build an Android APK and an iOS app
 
 	$ gomobile -target=android build
-	$ gomobile -target=ios build  // a-work-in-progress
+	$ gomobile -target=ios     build  // a work in progress
 
 (Hello Gopher from Mobile)
 
@@ -126,9 +126,7 @@ Functions marked with `//export` cgo annotations are callable.
 
 .image 2015-gophercon-mobile/gobind.png 300 _
 
-Manually mapping data structures and functions between languages
-
-Tedious!
+Manually mapping data structures and functions between languages is tedious and error-prone!
 
 
 * The gobind tool
@@ -142,7 +140,7 @@ Defines the language binding from exported Go APIs; no explicit annotation
 Currently supports a [[http://golang.org/x/mobile/cmd/gobind][subset of Go types]]
 
 
-* Functions & Basic types & Errors
+* Binding Functions, Basic Types & Errors
 
 Go
 
@@ -160,7 +158,7 @@ Generated Objective-C
 
 	FOUNDATION_EXPORT BOOL GoMypkg_Hello(NSString** ret0_, NSError** error);
 
-* Struct
+* Binding Structs
 
 Go
 
@@ -235,15 +233,15 @@ Simplifies the build process. Internally,
 
 iOS support is a work in progress
 
-* Android Studio integration
+* Android Studio Integration
 
 Android Studio 1.2+ supports `.aar` import
 
 .image 2015-gophercon-mobile/androidstudio2.png 250 _
 
 To update the .aar,
-- Build script to invoke `gomobile bind`, or
-- Gradle-plugin to invoke `gomobile bind` and publish the output
+- Build script to invoke `gomobile` `bind`, or
+- Gradle plugin to invoke `gomobile` `bind` and publish the output
 
 In the future, this can be integrated into Android Studio
 
@@ -266,14 +264,14 @@ Dependency on `math`, `math/big`, `math/rand`, `unicode`, ...
 
 .image 2015-gophercon-mobile/canihas.jpg 300 _
 
-Rewriting in Java or Objective-C is a nonstarter
+Rewriting in Java or Objective-C is a non-starter
 
 * Yes, Ivy on Mobile
 
 .image 2015-gophercon-mobile/ivymobile.png 300 _
 .caption Ivy logo by [[http://www.reneefrench.com][Renée French]]
 
-Write it once as a lirary in Go
+Write it once as a library in Go
 
 Enjoy great features and packages available in Go
 
@@ -322,9 +320,9 @@ Enable calling Go functions from foreign language in a clean way
 
 - Improvement in GL/UI packages
 
-- More APIs available to "pure-Go" apps
+- More APIs available to "pure Go" apps
 
-- Testing, Profiling, Debugging
+- Testing, profiling, debugging
 
 - Support for more platforms (e.g. android/x86, iOS simulator)
 

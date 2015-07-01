@@ -8,8 +8,9 @@ cd hello
 
 declare -a arr=(
 #"less main.go"
+"wc -l main.go"
 "go run main.go"
-#"gomobile install -i ."
+"gomobile install ."
 )
 
 for i in "${arr[@]}"
