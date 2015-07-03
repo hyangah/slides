@@ -248,13 +248,13 @@ In the future, this can be integrated into Android Studio
 
 * The Story of Ivy Apps
 
-The [[robpike.io/ivy]] is an interpreter for an APL-like language developed by Rob Pike.
-
-.image 2015-gophercon-mobile/ivyscreenshot.png 400 _
+The [[robpike.io/ivy]] is an interpreter developed by Rob Pike
 
 It's a useful desktop calculator that handles big int, rational numbers, vectors, matrices
 
-It's fun to play with 
+.image 2015-gophercon-mobile/ivyscreenshot.png 380 _
+
+It's, in fact, an interpreter for an [[https://en.wikipedia.org/wiki/APL_(programming_language)][APL]]-like language
 
 * Ivy on Mobile?
 
