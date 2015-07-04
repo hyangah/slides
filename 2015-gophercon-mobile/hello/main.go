@@ -11,7 +11,7 @@ import (
 	"log"
 	"time"
 
-	_ "image/jpeg"
+	_ "image/png"
 )
 
 //START OMIT
@@ -42,7 +42,7 @@ func main() {
 
 const (
 	width  = 72
-	height = 60
+	height = 74
 )
 
 var (
@@ -95,10 +95,13 @@ func draw(c event.Config) {
 	}
 	if scene == nil {
 		loadScene(c)
+		gl.Enable(gl.BLEND)
+		gl.BlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 	}
 
-	gl.ClearColor(1, 1, 1, 1)
+	gl.ClearColor(242/255.0, 240/255.0, 217/255.0, 1)
 	gl.Clear(gl.COLOR_BUFFER_BIT)
+
 	now := clock.Time(time.Since(startClock) * 60 / time.Second)
 	eng.Render(scene, now, c)
 	debug.DrawFPS(c)
@@ -164,7 +167,7 @@ func hello() {
 }
 
 func loadGopher() sprite.SubTex {
-	a, err := asset.Open("gopher.jpeg")
+	a, err := asset.Open("gophersmall.png")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -178,7 +181,7 @@ func loadGopher() sprite.SubTex {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return sprite.SubTex{t, image.Rect(0, 0, 360, 300)}
+	return sprite.SubTex{t, image.Rect(0, 0, 360, 370)}
 }
 
 type arrangerFunc func(e sprite.Engine, n *sprite.Node, t clock.Time)

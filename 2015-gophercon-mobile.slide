@@ -30,21 +30,20 @@ Why?
 
 - Use Go to program a complete system (server/client)
 - Write a single cross-platform Go library
-- Write more Go than C/C++ ❤
+- Bring Go development tooling to mobile
 
 * Two ways of using Go
-
-SDK Apps
-
-- Write Android UI in Java
-- Write iOS UI in Swift/Objective-C
-- Write common functionality in Go as a library
 
 Native Apps
 
 - Write the whole app in Go
 - Use Go packages for graphics, event handling, audio, ...
 
+SDK Apps
+
+- Write Android UI in Java
+- Write iOS UI in Swift/Objective-C
+- Write common functionality in Go as a library
 
 * Native Apps
 
@@ -74,11 +73,10 @@ golang.org/x/mobile/exp/...
 
 * Demo: Hello, Gopher!
 
-.image 2015-gophercon-mobile/gophercon.png
+.image 2015-gophercon-mobile/gophercloud.png 400 _
 
 This program uses the packages from golang.org/x/mobile repo
-
-There is no Java or C in my code
+There is no Java or Objective-C in my code
 
 * Challenge #2: Building an app
 
@@ -113,7 +111,7 @@ To build an Android APK and an iOS app
 
 * Go as a shared library
 
-Go 1.5 can build Go programs as a library that can be consumed by C programs
+Go 1.5 can build Go programs as a library that can be used by C programs
 
 - Shared library for dynamic linking (`-buildmode=c-shared`)
 - C archive file for static linking (`-buildmode=c-archive`)
@@ -173,7 +171,7 @@ Go
 	}
 
 	func NewCounter() *Counter {
-		return &Counter{ 5 }
+		return &Counter{}
 	}
 
 * Struct: generated Java API
@@ -248,13 +246,13 @@ In the future, this can be integrated into Android Studio
 
 * The Story of Ivy Apps
 
-The [[robpike.io/ivy]] is an interpreter developed by Rob Pike
+The [[robpike.io/ivy][Ivy]] is an interpreter developed by Rob Pike
 
-It's a useful desktop calculator that handles big int, rational numbers, vectors, matrices
+It's a useful desktop calculator that handles big int, rational and floating-point numbers, vectors, matrices, ...
 
-.image 2015-gophercon-mobile/ivyscreenshot.png 380 _
+.image 2015-gophercon-mobile/ivyscreenshot.png 350 _
 
-It's, in fact, an interpreter for an [[https://en.wikipedia.org/wiki/APL_(programming_language)][APL]]-like language
+It is in fact an interpreter for an [[https://en.wikipedia.org/wiki/APL_(programming_language)][APL]]-like language
 
 * Ivy on Mobile?
 
@@ -279,7 +277,7 @@ Enjoy great features and packages available in Go
 
 * Go 1.4: Hello, Android!
 
-Released in December 2015
+Released in December 2014
 
 Can build Android apps (`arm`)
 
@@ -294,7 +292,7 @@ Packages for cross-device apps: basic app control, OpenGL ES 2, touch
 
 * Go 1.5: Hello, iOS!
 
-To be released in August 2015
+Planned release early August 2015
 
 Experimental support for iOS (`arm,arm64`)
 
