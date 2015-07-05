@@ -154,10 +154,17 @@ func loadScene(c event.Config) {
 			y += dy
 		}
 
-		eng.SetTransform(n, f32.Affine{
-			{width, 0, x},
-			{0, height, y},
-		})
+		if dx < 0 {
+			eng.SetTransform(n, f32.Affine{
+				{-width, 0, x + width},
+				{0, height, y},
+			})
+		} else {
+			eng.SetTransform(n, f32.Affine{
+				{width, 0, x},
+				{0, height, y},
+			})
+		}
 	})
 }
 
