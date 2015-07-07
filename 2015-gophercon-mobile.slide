@@ -149,11 +149,9 @@ Generated Java API
 
 Generated Objective-C API
 
-	FOUNDATION_EXPORT BOOL GoMypkg_Hello(NSString** ret0_, NSError** error);
+	FOUNDATION_EXPORT BOOL GoMypkgHello(NSString** ret0_, NSError** error);
 
 * Binding Structs
-
-Go API
 
 	package mypkg
 
@@ -169,9 +167,7 @@ Go API
 		return &Counter{}
 	}
 
-* Binding Structs
-
-Generated Java API
+* Generated Java API
 
 	public abstract class Mypkg {
 		public static final class Counter {
@@ -190,22 +186,20 @@ Use it from Java
 	counter.Inc();
 	
 
-* Binding Structs
-
-Generated Objective-C API
+* Generated Objective-C API
   	
-	@interface GoMypkg_Counter : NSObject { }
+	@interface GoMypkgCounter : NSObject { }
 	@property(strong, readonly) GoSeqRef *ref;
 	- (int64_t)Value;
 	- (void)setValue:(int64_t)v;
 	- (void)Inc;
 	@end
 	
-	FOUNDATION_EXPORT GoMypkg_Counter* GoMypkg_NewCounter();
+	FOUNDATION_EXPORT GoMypkgCounter* GoMypkgNewCounter();
 
 Use it from Objective-C
 
-	GoMypkg_Counter* counter = GoMypkg_NewCounter();
+	GoMypkgCounter* counter = GoMypkgNewCounter();
 	[counter setValue:12345];
 	[counter Inc];
 
@@ -216,7 +210,7 @@ Use it from Objective-C
 
 * The gomobile bind command
 
-Simplifies the build process. For example, for Android, 
+Simplifies the build process. For example, for Android,
 
 - Generates language bindings for Go packages
 
@@ -224,7 +218,7 @@ Simplifies the build process. For example, for Android,
 
 - Compiles the generated target language code
 
-- Bundles everything into a `.aar` file (modern way to distribute android libraries) 
+- Bundles everything into a `.aar` file (modern way to distribute android libraries)
 
 (DEMO)
 
@@ -269,7 +263,7 @@ Rewriting in Java or Objective-C is a non-starter
 
 Write it once as a library in Go
 
-Enjoy great features and packages available in Go
+Enjoy great language features and packages available in Go
 
 * Where are we now?
 
