@@ -5,12 +5,7 @@ GopherCon 2015
 Hana Kim
 Google
 
-* (for reviewers)
-
-[[https://critique.corp.google.com/#review/96785043][cl/96785043]]
-
-
-* Prehistory
+* Background
 
 Mobile support was frequently requested
 
@@ -30,55 +25,55 @@ Why?
 
 - Use Go to program a complete system (server/client)
 - Write a single cross-platform Go library
-- Bring Go development tooling to mobile
+- Bring a simple language and development tooling to mobile
 
 * Two ways of using Go
 
 Native Apps
 
 - Write the whole app in Go
-- Use Go packages for graphics, event handling, audio, ...
+- Use Go packages for graphics, event handling, audio, etc.
 
 SDK Apps
 
-- Write Android UI in Java
-- Write iOS UI in Swift/Objective-C
+- Write Android UI in Java, iOS UI in Objective-C/Swift
 - Write common functionality in Go as a library
 
 * Native Apps
 
 * Challenge #1: Cross-platform APIs
 
-Work for Android, iOS, and Desktop
+Work for Android, iOS, and Desktop environments
 
 Provide a rich set of APIs
 
 Follow idiomatic Go style
-
-
-* What's available?
-
-golang.org/x/mobile/...
-- [[http://golang.org/x/mobile/app][app: App control]]
-- [[http://golang.org/x/mobile/asset][asset: Raw asset access]]
-- [[http://golang.org/x/mobile/gl][gl: OpenGL ES 2]]
-- [[https://golang.org/x/mobile/event][event: Events]]
-- [[https://golang.org/x/mobile/geom][geom: Screen geometry]]
-
-golang.org/x/mobile/exp/...
-- [[https://golang.org/x/mobile/exp/audio][audio: Audio]]
-- [[https://golang.org/x/mobile/exp/font][font: System font]]
-- [[https://golang.org/x/mobile/exp/sprite][sprite: 2-D rendering]]
-- [[https://golang.org/x/mobile/exp/sensor][sensor: Sensors]]
 
 * Demo: Hello, Gopher!
 
 .image 2015-gophercon-mobile/gophercloud.png 400 _
 
 This program uses the packages from golang.org/x/mobile repo
-There is no Java or Objective-C in my code
+There is no Java or Objective-C or C in my code
 
-* Challenge #2: Building an app
+* What's available?
+
+golang.org/x/mobile/...
+
+- [[http://golang.org/x/mobile/app][app: App control]]
+- [[http://golang.org/x/mobile/asset][asset: Asset management]]
+- [[http://golang.org/x/mobile/gl][gl: OpenGL ES 2]]
+- [[https://golang.org/x/mobile/event][event: Events]]
+- [[https://golang.org/x/mobile/geom][geom: Screen geometry]]
+
+golang.org/x/mobile/exp/...
+
+- [[https://golang.org/x/mobile/exp/audio][audio: Audio]]
+- [[https://golang.org/x/mobile/exp/font][font: System font]]
+- [[https://golang.org/x/mobile/exp/sprite][sprite: 2-D rendering]]
+- [[https://golang.org/x/mobile/exp/sensor][sensor: Sensors]]
+
+* Challenge #2: Build systems
 
 Dealing with
 
@@ -105,16 +100,16 @@ To build an Android APK and an iOS app
 	$ gomobile -target=android build
 	$ gomobile -target=ios     build  // a work in progress
 
-(Hello Gopher from Mobile)
+(Demo)
 
 * SDK Apps
 
-* Go as a shared library
+* Go as a library
 
-Go 1.5 can build Go programs as a library that can be used by C programs
+Go 1.5 can build Go programs as a library that can be used by non-Go programs
 
 - Shared library for dynamic linking (`-buildmode=c-shared`)
-- C archive file for static linking (`-buildmode=c-archive`)
+- Archive file for static linking (`-buildmode=c-archive`)
 
 Functions marked with `//export` cgo annotations are callable.
 
@@ -140,25 +135,25 @@ Currently supports a [[http://golang.org/x/mobile/cmd/gobind][subset of Go types
 
 * Binding Functions, Basic Types & Errors
 
-Go
+Go API
 
 	package mypkg
 
 	func Hello() (string, error) { return "Gopher", nil }
 
-Generated Java
+Generated Java API
 
 	public abstract class Mypkg {
 	    public static String Hello() throws Exception { ... }
 	}
 
-Generated Objective-C
+Generated Objective-C API
 
 	FOUNDATION_EXPORT BOOL GoMypkg_Hello(NSString** ret0_, NSError** error);
 
 * Binding Structs
 
-Go
+Go API
 
 	package mypkg
 
@@ -174,7 +169,9 @@ Go
 		return &Counter{}
 	}
 
-* Struct: generated Java API
+* Binding Structs
+
+Generated Java API
 
 	public abstract class Mypkg {
 		public static final class Counter {
@@ -186,14 +183,16 @@ Go
 		public static Counter NewCounter() { ... }
 	}
 
-Use like a Java object
+Use it from Java
 
 	Counter counter = NewCounter();
 	counter.SetValue(12345);
 	counter.Inc();
 	
 
-* Struct: generated Objective-C API
+* Binding Structs
+
+Generated Objective-C API
   	
 	@interface GoMypkg_Counter : NSObject { }
 	@property(strong, readonly) GoSeqRef *ref;
@@ -204,7 +203,7 @@ Use like a Java object
 	
 	FOUNDATION_EXPORT GoMypkg_Counter* GoMypkg_NewCounter();
 
-Use like an Objective-C object
+Use it from Objective-C
 
 	GoMypkg_Counter* counter = GoMypkg_NewCounter();
 	[counter setValue:12345];
@@ -217,36 +216,35 @@ Use like an Objective-C object
 
 * The gomobile bind command
 
-Simplifies the build process. Internally,
+Simplifies the build process. For example, for Android, 
 
-- Generates language bindings for a Go package
+- Generates language bindings for Go packages
 
 - Compiles Go code to a shared library
 
 - Compiles the generated target language code
 
-- Packages everything into a `.aar` file (modern way to distribute android library) 
+- Bundles everything into a `.aar` file (modern way to distribute android libraries) 
 
 (DEMO)
 
-iOS support is a work in progress
+iOS support is a work in progress.
 
 * Android Studio Integration
 
-Android Studio 1.2+ supports `.aar` import
+Android Studio 1.2+ supports `.aar` import.
 
 .image 2015-gophercon-mobile/androidstudio2.png 250 _
 
 To update the .aar,
+
 - Build script to invoke `gomobile` `bind`, or
 - Gradle plugin to invoke `gomobile` `bind` and publish the output
 
-In the future, this can be integrated into Android Studio
 
+* The Story of Ivy
 
-* The Story of Ivy Apps
-
-The [[robpike.io/ivy][Ivy]] is an interpreter developed by Rob Pike
+The [[robpike.io/ivy][Ivy]] is a command line tool developed by Rob Pike
 
 It's a useful desktop calculator that handles big int, rational and floating-point numbers, vectors, matrices, ...
 
@@ -264,7 +262,7 @@ Dependency on `math`, `math/big`, `math/rand`, `unicode`, ...
 
 Rewriting in Java or Objective-C is a non-starter
 
-* Yes, Ivy on Mobile
+* Gomobile bind
 
 .image 2015-gophercon-mobile/ivymobile.png 300 _
 .caption Ivy logo by [[http://www.reneefrench.com][Renée French]]
@@ -275,7 +273,7 @@ Enjoy great features and packages available in Go
 
 * Where are we now?
 
-* Go 1.4: Hello, Android!
+* Go 1.4: Hello Android!
 
 Released in December 2014
 
@@ -290,7 +288,7 @@ Packages for cross-device apps: basic app control, OpenGL ES 2, touch
 .link https://golang.org/s/go14android
 .link https://golang.org/s/gobind
 
-* Go 1.5: Hello, iOS!
+* Go 1.5: Hello iOS!
 
 Planned release early August 2015
 
@@ -298,9 +296,9 @@ Experimental support for iOS (`arm,arm64`)
 
 iOS builder 
 
-* Go 1.5: Shared libraries
+* Go 1.5: Go programs as libraries
 
-Enable calling Go functions from foreign language in a clean way
+Can call Go functions from foreign language in a clean way
 
 .link golang.org/s/execmodes
 
@@ -332,5 +330,4 @@ Enable calling Go functions from foreign language in a clean way
 
 .image 2015-gophercon-mobile/contributors.png 480 _
 .caption git log | word_cloud
-
 
