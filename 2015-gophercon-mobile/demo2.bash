@@ -4,13 +4,11 @@ prompt() {
 	read -p "$1"
 }
 
-export ANDROID_HOME=/Users/hakim/Library/Android/sdk
-
 declare -a arr=(
 "cd mypkg"
 "tree"
 "cat mypkg.go"
-"export ANDROID_HOME=/Users/hakim/Library/Android/sdk"
+"export ANDROID_HOME=${ANDROID_HOME}"
 "gomobile bind ."
 "tree"
 "unzip -l mypkg.aar"

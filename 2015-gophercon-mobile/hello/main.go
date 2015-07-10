@@ -14,7 +14,6 @@ import (
 	_ "image/png"
 )
 
-//START OMIT
 import (
 	"golang.org/x/mobile/app"
 	"golang.org/x/mobile/asset"
@@ -29,9 +28,8 @@ import (
 	"golang.org/x/mobile/gl"
 )
 
-//END OMIT
-
 func main() {
+	// NOTE: app.Run is deprecated. Change to use app.Main.
 	app.Run(app.Callbacks{
 		Start: start,
 		Stop:  stop,
@@ -53,11 +51,11 @@ var (
 
 	player *audio.Player
 
-	activate    = false
+	started  = false
+	activate = false
+
 	acceptTouch = false
 	touchLoc    geom.Point
-
-	started = false
 )
 
 func touch(t event.Touch, c event.Config) {
@@ -98,7 +96,7 @@ func draw(c event.Config) {
 		gl.Enable(gl.BLEND)
 		gl.BlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 	}
-
+	// gophercon bg color
 	gl.ClearColor(242/255.0, 240/255.0, 217/255.0, 1)
 	gl.Clear(gl.COLOR_BUFFER_BIT)
 
@@ -155,7 +153,7 @@ func loadScene(c event.Config) {
 		}
 
 		if dx < 0 {
-			eng.SetTransform(n, f32.Affine{
+			eng.SetTransform(n, f32.Affine{ // change direction
 				{-width, 0, x + width},
 				{0, height, y},
 			})

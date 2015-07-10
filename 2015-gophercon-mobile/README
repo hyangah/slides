@@ -1,0 +1,28 @@
+Demo Setup
+----------------------
+
+- Download and install Android SDK
+
+https://developer.android.com/sdk/index.html
+Or, easiest way is to install Android Studio.
+
+
+- Download go1.5 and build for your host.
+
+- Set the environment variables listed in the demo.rc for your environment.
+If you use bash, modify the demo.rc and run `source demo.rc`
+
+- Install the gomobile tool and run init before demo.
+
+% go install golang.org/x/mobile/cmd/gomobile
+% gomobile init
+
+- Hello Gopher demo
+
+% demo1.bash
+
+- Gobind demo
+
+% demo2.bash
+
+Enjoy.
