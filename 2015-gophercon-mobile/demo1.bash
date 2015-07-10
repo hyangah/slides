@@ -7,10 +7,9 @@ prompt() {
 cd hello
 
 declare -a arr=(
-#"less main.go"
 "wc -l main.go"
 "go run main.go"
-"gomobile install ."
+"gomobile install -target=android"
 )
 
 for i in "${arr[@]}"

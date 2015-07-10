@@ -98,7 +98,7 @@ To install the Android/iOS compiler tool chain:
 To build an Android APK and an iOS app
 
 	$ gomobile -target=android build
-	$ gomobile -target=ios     build  // a work in progress
+	$ gomobile -target=ios     build
 
 (Demo)
 
@@ -242,7 +242,7 @@ The [[robpike.io/ivy][Ivy]] is a command line tool developed by Rob Pike
 
 It's a useful desktop calculator that handles big int, rational and floating-point numbers, vectors, matrices, ...
 
-.image 2015-gophercon-mobile/ivyscreenshot.png 350 _
+.image 2015-gophercon-mobile/ivyscreenshot2.png 300 _
 
 It is in fact an interpreter for an [[https://en.wikipedia.org/wiki/APL_(programming_language)][APL]]-like language
 

@@ -6,13 +6,12 @@ prompt() {
 
 export ANDROID_HOME=/Users/hakim/Library/Android/sdk
 
-cd mypkg
-
 declare -a arr=(
+"cd mypkg"
 "tree"
 "cat mypkg.go"
 "export ANDROID_HOME=/Users/hakim/Library/Android/sdk"
-"gomobile bind -i ."
+"gomobile bind ."
 "tree"
 "unzip -l mypkg.aar"
 )
