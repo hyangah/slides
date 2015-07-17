@@ -1,5 +1,0 @@
-PS1='$ '
-export GOROOT="/Users/hakim/Local/goroots/tip/go"
-export GOPATH="/Users/hakim/Local/gopaths/ws1"
-export ANDROID_HOME="/Users/hakim/Library/Android/sdk"
-export PATH=$GOROOT/bin:$GOPATH/bin:$PATH

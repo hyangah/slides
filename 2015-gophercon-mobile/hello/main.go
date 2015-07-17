@@ -12,12 +12,13 @@ import (
 	"time"
 
 	_ "image/png"
-)
 
-import (
 	"golang.org/x/mobile/app"
 	"golang.org/x/mobile/asset"
-	"golang.org/x/mobile/event"
+	"golang.org/x/mobile/event/config"
+	"golang.org/x/mobile/event/lifecycle"
+	"golang.org/x/mobile/event/paint"
+	"golang.org/x/mobile/event/touch"
 	"golang.org/x/mobile/exp/app/debug"
 	"golang.org/x/mobile/exp/audio"
 	"golang.org/x/mobile/exp/f32"
@@ -29,12 +30,26 @@ import (
 )
 
 func main() {
-	// NOTE: app.Run is deprecated. Change to use app.Main.
-	app.Run(app.Callbacks{
-		Start: start,
-		Stop:  stop,
-		Draw:  draw,
-		Touch: touch,
+	app.Main(func(a app.App) {
+		for e := range a.Events() {
+			switch e := app.Filter(e).(type) {
+			case lifecycle.Event:
+				switch e.Crosses(lifecycle.StageVisible) {
+				case lifecycle.CrossOn:
+					onStart()
+				case lifecycle.CrossOff:
+					onStop()
+				}
+			case config.Event:
+				globalCfg = e // dimension change. move to the center.
+				touchLoc = geom.Point{globalCfg.Width / 2, globalCfg.Height / 2}
+			case paint.Event:
+				onPaint(globalCfg)
+				a.EndPaint()
+			case touch.Event:
+				onTouch(e)
+			}
+		}
 	})
 }
 
@@ -45,21 +60,20 @@ const (
 
 var (
 	startClock = time.Now()
-
-	eng   = glsprite.Engine()
-	scene *sprite.Node
+	eng        = glsprite.Engine()
+	scene      *sprite.Node
 
 	player *audio.Player
 
-	started  = false
-	activate = false
-
+	started     = false
+	activate    = false
 	acceptTouch = false
 	touchLoc    geom.Point
+	globalCfg   config.Event
 )
 
-func touch(t event.Touch, c event.Config) {
-	if t.Change != event.ChangeOn {
+func onTouch(t touch.Event) {
+	if t.Type != touch.TypeStart {
 		return
 	}
 
@@ -70,7 +84,10 @@ func touch(t event.Touch, c event.Config) {
 	}
 }
 
-func start() {
+func onStart() {
+	gl.Enable(gl.BLEND)
+	gl.BlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+
 	rc, err := asset.Open("hello.wav")
 	if err != nil {
 		log.Fatal(err)
@@ -79,25 +96,21 @@ func start() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }
 
-func stop() {
+func onStop() {
 	player.Close()
 }
 
-func draw(c event.Config) {
+func onPaint(c config.Event) {
 	if !started {
 		touchLoc = geom.Point{c.Width / 2, c.Height / 2}
 		started = true
 	}
 	if scene == nil {
-		loadScene(c)
-		gl.Enable(gl.BLEND)
-		gl.BlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+		loadScene()
 	}
-	// gophercon bg color
-	gl.ClearColor(242/255.0, 240/255.0, 217/255.0, 1)
+	gl.ClearColor(242/255.0, 240/255.0, 217/255.0, 1) // gophercon bg color
 	gl.Clear(gl.COLOR_BUFFER_BIT)
 
 	now := clock.Time(time.Since(startClock) * 60 / time.Second)
@@ -112,7 +125,7 @@ func newNode() *sprite.Node {
 	return n
 }
 
-func loadScene(c event.Config) {
+func loadScene() {
 	gopher := loadGopher()
 	scene = &sprite.Node{}
 	eng.Register(scene)
@@ -142,10 +155,10 @@ func loadScene(c event.Config) {
 			if y < 0 {
 				dy = 1
 			}
-			if x+width > float32(c.Width) {
+			if x+width > float32(globalCfg.Width) {
 				dx = -1
 			}
-			if y+height > float32(c.Height) {
+			if y+height > float32(globalCfg.Height) {
 				dy = -1
 			}
 			x += dx
