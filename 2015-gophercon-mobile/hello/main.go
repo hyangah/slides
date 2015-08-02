@@ -42,10 +42,10 @@ func main() {
 				}
 			case config.Event:
 				globalCfg = e // dimension change. move to the center.
-				touchLoc = geom.Point{globalCfg.Width / 2, globalCfg.Height / 2}
+				touchLoc = geom.Point{globalCfg.WidthPt / 2, globalCfg.HeightPt / 2}
 			case paint.Event:
 				onPaint(globalCfg)
-				a.EndPaint()
+				a.EndPaint(e)
 			case touch.Event:
 				onTouch(e)
 			}
@@ -73,7 +73,7 @@ var (
 )
 
 func onTouch(t touch.Event) {
-	if t.Type != touch.TypeStart {
+	if t.Type != touch.TypeBegin {
 		return
 	}
 
@@ -104,7 +104,7 @@ func onStop() {
 
 func onPaint(c config.Event) {
 	if !started {
-		touchLoc = geom.Point{c.Width / 2, c.Height / 2}
+		touchLoc = geom.Point{c.WidthPt / 2, c.HeightPt / 2}
 		started = true
 	}
 	if scene == nil {
@@ -155,10 +155,10 @@ func loadScene() {
 			if y < 0 {
 				dy = 1
 			}
-			if x+width > float32(globalCfg.Width) {
+			if x+width > float32(globalCfg.WidthPt) {
 				dx = -1
 			}
-			if y+height > float32(globalCfg.Height) {
+			if y+height > float32(globalCfg.HeightPt) {
 				dy = -1
 			}
 			x += dx
